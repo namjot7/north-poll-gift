@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(dbgenerated("gen_random_uuid()"))
+  name         String
+  email        String        @unique
+  password     String
+  groupMembers GroupMember[]
+  votes        Vote[]
+  boards       Board[]
+}
+
+model Board {
+  id              String           @id @default(dbgenerated("gen_random_uuid()"))
+  groupId         String
+  ownerId         String // person getting the gift
+  group           Group            @relation(fields: [groupId], references: [id])
+  owner           User             @relation(fields: [ownerId], references: [id])
+  giftSuggestions GiftSuggestion[]
+}
+
+model Group {
+  id           String        @id @default(dbgenerated("gen_random_uuid()"))
+  name         String
+  createdBy    String
+  boards       Board[]
+  groupMembers GroupMember[]
+}
+
+model GroupMember {
+  id      String @id @default(uuid())
+  groupId String
+  userId  String
+  group   Group  @relation(fields: [groupId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model GiftSuggestion {
+  id          String  @id @default(dbgenerated("gen_random_uuid()"))
+  name        String
+  imageUrl    String
+  price       Float?
+  link        String?
+  suggestedBy String
+  boardId     String
+  board       Board   @relation(fields: [boardId], references: [id])
+  votes       Vote[]
+}
+
+model Vote {
+  id             String         @id @default(uuid())
+  userId         String
+  suggestionId   String
+  user           User           @relation(fields: [userId], references: [id])
+  giftSuggestion GiftSuggestion @relation(fields: [suggestionId], references: [id])
+}

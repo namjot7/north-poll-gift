@@ -1,0 +1,80 @@
+export default function DashboardPage({ userWithGroup }) {
+  const session = userWithGroup; // simplified reference
+  const group = session.groups?.[0]?.group; // assuming 1 group for now
+
+  // ✅ Case 1 — No Groups
+  if (!group) {
+    return (
+      <div className="space-y-4">
+        <p>
+          Welcome {session.user.name}! You’re not in a gift exchange yet.
+        </p>
+        <CreateGroupDialog />
+        <JoinGroupDialog />
+      </div>
+    );
+  }
+
+  // ✅ Case 2 — In group, but assignments not generated yet
+  if (group.members.length > 1 && group.assignments.length === 0) {
+    return (
+      <div className="space-y-4">
+        <p>Group: {group.name} 🎄</p>
+        <p>Members: {group.members.length}</p>
+        <p>Waiting for the organizer to start the exchange...</p>
+
+        <p className="text-sm text-muted-foreground">
+          Invite others to join:
+        </p>
+        <div className="rounded-md p-2 border font-mono text-sm">
+          {`https://yourapp.com/join/${group.id}`}
+        </div>
+
+        {session.user.id === group.createdBy && (
+          <Button>Generate Assignments</Button>
+        )}
+      </div>
+    );
+  }
+
+  // ✅ Case 3 — Assignments Done — Main Gift Dashboard
+  if (group.assignments.length > 0 && group.finalGift == null) {
+    const assignedPerson = group.assignments.find(
+      (a) => a.giverId === session.user.id
+    )?.receiver;
+
+    return (
+      <div className="space-y-4">
+        <p>Welcome {session.user.name}, you are buying a gift for:</p>
+        <h2 className="text-2xl font-semibold">{assignedPerson.name}</h2>
+        <p>Budget: $100 - $200</p>
+
+        <Button>Go to {assignedPerson.name}'s gift board</Button>
+      </div>
+    );
+  }
+
+  // ✅ Case 4 — Final Gift Chosen
+  if (group.finalGift) {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">🎁 Final Gift Selected!</h2>
+
+        <p>You are buying for → {group.finalGift.receiver.name}</p>
+
+        <div className="space-y-2 bg-muted p-4 rounded-md border">
+          <p className="font-medium">{group.finalGift.giftName}</p>
+          <p>${group.finalGift.price}</p>
+          <a
+            href={group.finalGift.link}
+            className="text-blue-500 hover:underline"
+          >
+            {group.finalGift.link}
+          </a>
+        </div>
+
+        <p>Remember to bring your gift on December 25th!</p>
+      </div>
+    );
+  }
+}
