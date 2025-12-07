@@ -48,7 +48,7 @@ export async function createGroup(
         // console.log(session)
 
         // do not know how to use Zod Validation
-        const group_parsed = createGroupSchema.safeParse(groupName);
+        // const group_parsed = createGroupSchema.safeParse(groupName);
 
         await prisma.group.create({
             data: {

@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL") // prisma 6
 }
 
 model User {
@@ -47,7 +47,7 @@ model GiftSuggestion {
   id          String  @id @default(dbgenerated("gen_random_uuid()"))
   name        String
   imageUrl    String
-  price       Float?
+  price       Decimal @default(0) @db.Decimal(10, 2)
   link        String?
   suggestedBy String
   boardId     String
@@ -56,9 +56,11 @@ model GiftSuggestion {
 }
 
 model Vote {
-  id             String         @id @default(uuid())
-  userId         String
-  suggestionId   String
+  id     String @id @default(uuid())
+  userId String
+  giftId String
+  value  Int
+
   user           User           @relation(fields: [userId], references: [id])
-  giftSuggestion GiftSuggestion @relation(fields: [suggestionId], references: [id])
+  giftSuggestion GiftSuggestion @relation(fields: [giftId], references: [id])
 }

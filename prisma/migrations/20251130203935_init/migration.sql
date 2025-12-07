@@ -1,14 +1,12 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
 
-  - Made the column `name` on table `User` required. This step will fail if there are existing NULL values in that column.
-  - Made the column `password` on table `User` required. This step will fail if there are existing NULL values in that column.
-
-*/
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "name" SET NOT NULL,
-ALTER COLUMN "name" DROP DEFAULT,
-ALTER COLUMN "password" SET NOT NULL;
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Board" (
@@ -42,7 +40,7 @@ CREATE TABLE "GiftSuggestion" (
     "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
-    "price" DOUBLE PRECISION,
+    "price" DECIMAL(10,2) NOT NULL DEFAULT 0,
     "link" TEXT,
     "suggestedBy" TEXT NOT NULL,
     "boardId" TEXT NOT NULL,
@@ -58,6 +56,9 @@ CREATE TABLE "Vote" (
 
     CONSTRAINT "Vote_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "Board" ADD CONSTRAINT "Board_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

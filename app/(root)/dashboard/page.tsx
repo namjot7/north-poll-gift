@@ -23,8 +23,8 @@ const Dashboard = async () => {
                 <Button>Create</Button>
                 <Button>Join</Button>
             </div>
-            {/* <CreateGroupForm /> */}
-            {/* <JoinGroupForm /> */}
+            {/* <CreateGroupForm />
+            <JoinGroupForm /> */}
 
             {/* Case 1 - User has no groups yet */}
             {groups.length === 0 && (

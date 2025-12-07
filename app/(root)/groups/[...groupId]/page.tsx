@@ -30,7 +30,7 @@ const GroupPage = async (
       <div>
         <p>Invite other people using this groupId</p>
         <p className="text-red-400 text-sm">add a copy to clipboard icon</p>
-        <Button variant={'outline'}>{groupId}</Button>
+        <span>{groupId}</span>
         <p className="mt-5">Members: {group?.groupMembers.map(e => (
           <span key={e.id}>{e.user.name}, </span>
         ))} </p>
