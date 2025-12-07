@@ -2,13 +2,14 @@ import { formatCurrency } from '@/lib/utils'
 import Image from 'next/image'
 import GiftButtons from './gift-buttons';
 import { auth } from '@/auth.config';
+import { Gift } from '@/types';
 
 const GiftSuggestionCard = async (
-    { item }: { item: any }
+    { item }: { item: Gift }
 ) => {
-    // console.log(item)
     const session = await auth();
     if (!session?.user) return null;
+    const userId = session?.user.id;
 
     return (
         <div className='flex gap-10 bg-slate-100 p-5'>
@@ -19,10 +20,9 @@ const GiftSuggestionCard = async (
                 <div>
                     <h4 className="h3-bold">{item.name}</h4>
                     <p>Price: {formatCurrency(item.price)}</p>
-                    <p className='text-red-500'>total votes: </p>
                     <p>Suggested By: {item.suggestedBy}</p>
                 </div>
-                <GiftButtons link={item.link} id={item.id} user={session?.user} />
+                <GiftButtons link={item.link} giftId={item.id} userId={userId} />
             </div>
         </div>
     )

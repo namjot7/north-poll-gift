@@ -63,4 +63,6 @@ model Vote {
 
   user           User           @relation(fields: [userId], references: [id])
   giftSuggestion GiftSuggestion @relation(fields: [giftId], references: [id])
+
+  @@unique([userId, giftId]) // composite unique key : limits the vote to 1 per user
 }

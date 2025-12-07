@@ -33,23 +33,3 @@ export async function getGiftSuggestions({ boardId }: { boardId: string }) {
     // console.log(res)
     return res;
 }
-
-// export async function upVoteGift({ giftId, userId }: {
-//     giftId: string, userId: string
-// }) {
-export async function upVoteGift(giftId: string, userId: string) {
-    // console.log(giftId)
-    console.log('upvote this')
-    // const gift = await prisma.giftSuggestion.findFirst({
-    //     where: { id: giftId }
-    // })
-    // if (!gift) throw new Error("Gift not found");
-    // await prisma.vote.create({
-    //     data: {
-    //         userId: userId,
-    //         giftId: giftId,
-    //         value: 1,
-    //     }
-    // })
-    // console.log(gift)
-}

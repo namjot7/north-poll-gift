@@ -11,17 +11,8 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
 });
 
-export function formatCurrency(amount: number | string | null) {
-  // if (typeof amount === 'number') {
-  //   return CURRENCY_FORMATTER.format(amount);
-  // }
-  // else if (typeof amount === 'string') {
-  //   return CURRENCY_FORMATTER.format(Number(amount));
-  // }
-  // else {
-  //   return 'NaN';
-  // }
-  if (amount === null || amount === undefined) {
+export function formatCurrency(amount: number | string | null | undefined) {
+  if (typeof amount === null || typeof amount === undefined) {
     return 'NaN';
   }
 
@@ -30,6 +21,5 @@ export function formatCurrency(amount: number | string | null) {
   if (isNaN(num)) {
     return 'NaN'; // or return amount; or return "$0.00"
   }
-
   return CURRENCY_FORMATTER.format(num);
 }
