@@ -1,14 +1,17 @@
 import { APP_NAME } from "@/lib/constants"
 import Link from "next/link"
 import UserButton from "./user-button"
+import Image from "next/image"
 
 const Header = async () => {
 
   return (
-    <header className="bg-black/70 backdrop-blur-3xl text-white">
+    <header className="text-white">
       <div className="wrapper flex-between">
-        <Link href="/" className="text-xl font-medium">{APP_NAME}</Link>
-
+        <div className="flex-center gap-1">
+          <Image src={'/tree (2).png'} width={35} height={35} alt="christmas tree" />
+          <Link href="/" className="text-2xl font-medium">{APP_NAME}</Link>
+        </div>
         <div className="flex-center gap-5">
           <Link href="/dashboard">Dashboard</Link>
           <UserButton />

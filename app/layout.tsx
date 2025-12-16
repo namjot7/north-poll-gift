@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { APP_NAME } from "@/lib/constants";
 import { Geist, Roboto } from 'next/font/google'
+import Image from "next/image";
 
 // const geist = Roboto({
 //     subsets: ['latin'],
@@ -22,9 +23,14 @@ export default function RootLayout({
     return (
         <html lang="en" >
             {/* className={geist.className} */}
-                <body>
-                    {children}
-                </body>
+            <body>
+                {children}
+                <Image
+                    src='/bg-default.jpg' alt="main background image"
+                    className="w-full h-full absolute top-0 left-0 -z-10 object-cover"
+                    height={1920} width={1080}
+                />
+            </body>
         </html>
     );
 }

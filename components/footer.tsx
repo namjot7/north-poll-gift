@@ -1,5 +1,4 @@
 import { APP_NAME } from '@/lib/constants'
-import React from 'react'
 
 const Footer = () => {
     return (

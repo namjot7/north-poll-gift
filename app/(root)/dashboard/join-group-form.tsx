@@ -1,13 +1,11 @@
 'use client';
 import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useActionState } from "react";
@@ -19,24 +17,25 @@ const JoinGroupForm = () => {
         success: false, message: ''
     })
     return (
-        <Card className="w-full max-w-sm">
-            <CardHeader>
-                <CardTitle>Join a group</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <form action={action}>
-                    <div>
-                        <div className="grid gap-2 mb-5">
-                            <Label htmlFor="groupId">Group Id</Label>
-                            <Input id="groupId" name="groupId" type="text" required />
-                        </div>
-                        <Button type="submit" className="w-full">Join</Button>
-                    </div>
-                </form>
-            </CardContent>
-        </Card>
-
+        <Dialog>
+            <form>
+                <DialogTrigger asChild>
+                    <Button variant="default">Join</Button>
+                </DialogTrigger>
+                <DialogContent className="w-sm">
+                    <DialogHeader>
+                        <DialogTitle>Join a group</DialogTitle>
+                    </DialogHeader>
+                    <form action={action}>
+                            <div className="grid gap-2 mb-5">
+                                <Label htmlFor="groupId">Group Id</Label>
+                                <Input id="groupId" name="groupId" type="text" required />
+                            </div>
+                            <Button type="submit" className="w-full">Join</Button>
+                    </form>
+                </DialogContent>
+            </form>
+        </Dialog>
     )
 }
-
-export default JoinGroupForm
+export default JoinGroupForm;

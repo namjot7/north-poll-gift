@@ -5,6 +5,18 @@ import JoinGroupForm from "./join-group-form";
 import { getGroups } from "@/lib/actions/group.actions";
 import Link from "next/link";
 import { Metadata } from "next";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 export const metadata: Metadata = {
     title: 'Dashboard'
@@ -16,22 +28,22 @@ const Dashboard = async () => {
     // console.log(groups.length)
 
     return (
-        <div className="wrapper relative">
-            <h2 className="h1-bold mb-5">Dashboard</h2>
-            <div className="absolute top-10 right-10 
-                flex gap-3">
-                <Button>Create</Button>
-                <Button>Join</Button>
+        <div className="wrapper relative text-white">
+            <div className="flex justify-between">
+                <h2 className="h1-bold mb-5 text-white">Dashboard</h2>
+                <div className="flex gap-3">
+                    <JoinGroupForm />
+                    <CreateGroupForm />
+                </div>
             </div>
-            {/* <CreateGroupForm />
-            <JoinGroupForm /> */}
 
             {/* Case 1 - User has no groups yet */}
             {groups.length === 0 && (
                 <div>
-                    <p>Welcome {session?.user?.name}, You are not in a gift exchange yet.</p>
-                    <Button>Create</Button>
-                    <Button>Join</Button>
+                    <p className="text-xl">Welcome {session?.user?.name}! 🎉</p>
+                    <p>It looks like you're not in a gift exchange yet. Let’s change that!</p>
+                    <p>Start a new group or join one with friends and family — and let the fun begin!</p>
+                    <button>Create a Group</button> {/* Or link to create/join a group */}
                 </div>
             )}
 
