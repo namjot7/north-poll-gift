@@ -21,14 +21,14 @@ const GiftButtons = ({
 
     const handleVoteBtn = async (value: number) => {
         await handleVote(giftId, value, userId);
-        handleGetVotes()
+        handleGetVotes();
     };
     const handleGetVotes = async () => {
         const data = await getVotes(giftId);
         setVotes(data);
     }
     useEffect(() => {
-        handleGetVotes()
+        handleGetVotes();
     }, [])
 
     return (

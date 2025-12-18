@@ -27,7 +27,7 @@ export default function RootLayout({
                 {children}
                 <Image
                     src='/bg-default.jpg' alt="main background image"
-                    className="w-full h-full absolute top-0 left-0 -z-10 object-cover"
+                    className="w-full absolute h-full top-0 left-0 -z-10 object-cover"
                     height={1920} width={1080}
                 />
             </body>

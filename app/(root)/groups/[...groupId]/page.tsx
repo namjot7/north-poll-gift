@@ -1,8 +1,8 @@
-import { auth } from "@/auth.config"
-import { Button } from "@/components/ui/button"
-import { getGroupById } from "@/lib/actions/group.actions"
-import { Metadata } from "next"
-import Link from "next/link"
+import { auth } from "@/auth.config";
+import { getGroupById } from "@/lib/actions/group.actions";
+import { Metadata } from "next";
+import Link from "next/link";
+import ShareBtn from "./share-btn";
 
 export const metadata: Metadata = {
   title: 'Group'
@@ -25,28 +25,27 @@ const GroupPage = async (
 
   return (
     <div className="wrapper">
-      <h2 className="h1-bold mb-5">{group?.name} - All Boards</h2>
-
-      <div>
-        <p>Invite other people using this groupId</p>
-        <p className="text-red-400 text-sm">add a copy to clipboard icon</p>
-        <span>{groupId}</span>
-        <p className="mt-5">Members: {group?.groupMembers.map(e => (
-          <span key={e.id}>{e.user.name}, </span>
-        ))} </p>
+      <div className="flex-between">
+        <h2 className="h2-bold text-white">{group?.name}</h2>
+        <ShareBtn groupId={groupId} />
       </div>
 
-      <div className="mt-5">
-        <div className="grid grid-cols-2 gap-3">
-          {filteredBoards?.map(board => (
-            <div key={board.id} className="card">
-              <h3 className="h3-bold mb-5">{board.owner.name}'s board</h3>
-              <Link href={`/boards/${board.id}`} className="btn-default">
-                See the suggestions
-              </Link>
-            </div>
-          ))}
-        </div>
+      <p className="mt-5 text-white">
+        {group?.groupMembers.map(e => (
+          <span className="capitalize" key={e.id}>{e.user.name}, </span>
+        ))}
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-3 mt-5">
+        {filteredBoards?.map(board => (
+          <div key={board.id} className="card">
+            <h3 className="h3-bold">{board.owner.name}'s board</h3>
+            <p className="my-3">Assigned to: </p>
+            <Link href={`/boards/${board.id}`} className="btn-default">
+              See the suggestions
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   )

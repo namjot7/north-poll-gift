@@ -30,7 +30,7 @@ export const GiftSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     imageUrl: z.string(),
     price: z.number(),
-    link: z.string().optional(),
+    link: z.string(),
     suggestedBy: z.string(),
     boardId: z.string(),
 })

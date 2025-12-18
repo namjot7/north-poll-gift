@@ -39,7 +39,7 @@ body {
     }
 
     .btn-default {
-        @apply bg-black hover:bg-neutral-800 text-white px-5 py-2 cursor-pointer rounded-xl;
+        @apply bg-black hover:bg-neutral-800 text-white px-3 py-1 cursor-pointer rounded-sm;
     }
 
     .btn-link {
@@ -47,11 +47,11 @@ body {
     }
 
     .card {
-        @apply bg-gray-200 p-5 rounded mb-3;
+        @apply w-sm bg-black/20 backdrop-blur-lg p-5 text-white rounded mb-3;
     }
 
     .btn-primary {
-        @apply bg-violet-600 px-5 py-2 rounded-md hover:bg-violet-700 rounded-md cursor-pointer;
+        @apply bg-violet-600 px-5 py-2 hover:bg-violet-700 rounded-md cursor-pointer;
     }
 
     /* .bg-linear {

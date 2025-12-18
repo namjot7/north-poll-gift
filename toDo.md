@@ -16,3 +16,9 @@
 
 #### password hide/unhide feature
 - user exists, user does not exist
+
+
+### cases
+- user already exists and tries to join same group
+- error handling for when group id does not exist
+- 

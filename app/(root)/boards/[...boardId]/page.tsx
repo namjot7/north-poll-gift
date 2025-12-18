@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { getBoardById } from '@/lib/actions/board.actions'
 import { Metadata } from 'next'
 import GiftSuggestionForm from './gift-suggestion-form';
@@ -17,22 +16,20 @@ const BoardPage = async (
 
     const giftSuggestions = await getGiftSuggestions({ boardId });
     // console.log(giftSuggestions)
+
     return (
-        <div className='wrapper'>
-            <h3 className="h1-bold my-10">{board?.owner.name}'s Board</h3>
-            {/* <Card className='max-w-xl'>
-                <CardHeader className='text-2xl font-medium'>
-                    Suggest a gift for {board?.owner.name}
-                </CardHeader>
-                <CardContent>
-                    <GiftSuggestionForm boardId={boardId} />
-                </CardContent>
-            </Card> */}
+        <div className='wrapper text-white'>
+            <div className="flex-between mb-8">
+                <h2 className="h2-bold">{board?.owner.name}'s Board</h2>
+                <GiftSuggestionForm boardId={boardId} />
+            </div>
             <div>
-                <h2 className="h2-bold">Gift Suggestions</h2>
-                {giftSuggestions.length > 0 && giftSuggestions.map(item => (
-                    <GiftSuggestionCard key={item.id} item={item} />
-                ))}
+                <h3 className="h3-bold mb-5">Gift Suggestions</h3>
+                <div className="grid md:grid-cols-2 gap-5">
+                    {giftSuggestions.length > 0 && giftSuggestions.map(item => (
+                        <GiftSuggestionCard key={item.id} item={item} />
+                    ))}
+                </div>
             </div>
         </div>
     )

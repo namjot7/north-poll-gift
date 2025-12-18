@@ -2,6 +2,7 @@ import AuthProvider from '@/components/auth-provider';
 import Footer from '@/components/footer';
 import Header from '@/components/shared/header';
 import React from 'react'
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function RootLayout({
   children
@@ -15,6 +16,7 @@ export default async function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <Toaster />
       </div>
     </AuthProvider>
   )

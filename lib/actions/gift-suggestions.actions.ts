@@ -15,10 +15,9 @@ export async function submitGiftSuggestionForm(
         imageUrl: formData.get('imageUrl'),
         link: formData.get('link'),
         price: Number(formData.get('price')),
-        suggestedBy: suggestedByUser,
         boardId: formData.get('boardId'),
+        suggestedBy: suggestedByUser,
     });
-    // console.log(giftSuggestion)
 
     await prisma.giftSuggestion.create({ data: giftSuggestion })
 
@@ -27,9 +26,13 @@ export async function submitGiftSuggestionForm(
     }
 }
 export async function getGiftSuggestions({ boardId }: { boardId: string }) {
-    const res = await prisma.giftSuggestion.findMany({
+    const gifts = await prisma.giftSuggestion.findMany({
         where: { boardId: boardId[0] }
     });
-    // console.log(res)
-    return res;
+    const normalGifts = gifts.map(gift => ({
+        ...gift,
+        price: gift.price.toNumber(),
+    }))
+    // console.log(normalGifts)
+    return normalGifts;
 }

@@ -7,18 +7,19 @@ import { Gift } from '@/types';
 const GiftSuggestionCard = async (
     { item }: { item: Gift }
 ) => {
+    // console.log(item)
     const session = await auth();
     if (!session?.user) return null;
     const userId = session?.user.id;
 
     return (
-        <div className='flex gap-10 bg-slate-100 p-5'>
+        <div className='flex gap-10'>
             <div>
                 <Image src={item.imageUrl} width={200} height={350} alt={item.name} loading='eager' />
             </div>
             <div className='flex flex-col justify-between'>
                 <div>
-                    <h4 className="h3-bold">{item.name}</h4>
+                    <h4 className="h3-bold mb-2">{item.name}</h4>
                     <p>Price: {formatCurrency(item.price)}</p>
                     <p>Suggested By: {item.suggestedBy}</p>
                 </div>
@@ -27,5 +28,4 @@ const GiftSuggestionCard = async (
         </div>
     )
 }
-
 export default GiftSuggestionCard
