@@ -13,11 +13,6 @@ const Home = () => {
             {/* Hero  */}
             <div className="flex-center h-[90vh] text-center">
                 {/* <Snowfall/> */}
-                <Image
-                    src='/bg-default.jpg' alt="main background image"
-                    className="w-full h-full absolute top-0 left-0 -z-10 object-cover"
-                    height={1920} width={1080}
-                />
                 <div>
                     <h1 className="text-4xl font-bold w-full mb-24 text-white">Gifting Made Easy</h1>
                     {/* <p className="text-gray-700 m-3 mb-5">Discover thoughtful gift ideas and invite others to share, plan, and celebrate together.</p> */}

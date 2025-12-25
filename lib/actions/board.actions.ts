@@ -2,7 +2,7 @@
 
 import { prisma } from "@/db/prisma"
 
-export const getBoardById = async (boardId: string) => {
+export const getBoardById = async ({ boardId }: { boardId: string }) => {
     // console.log(boardId)
 
     const board = await prisma.board.findFirst({

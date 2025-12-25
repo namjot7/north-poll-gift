@@ -44,15 +44,15 @@ model GroupMember {
 }
 
 model GiftSuggestion {
-  id          String  @id @default(dbgenerated("gen_random_uuid()"))
+  id          String   @id @default(dbgenerated("gen_random_uuid()"))
   name        String
-  imageUrl    String
-  price       Decimal @default(0) @db.Decimal(10, 2)
+  image       String?
   link        String?
   suggestedBy String
   boardId     String
-  board       Board   @relation(fields: [boardId], references: [id])
-  votes       Vote[]
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  votes Vote[]
 }
 
 model Vote {

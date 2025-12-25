@@ -19,11 +19,12 @@ const BoardPage = async (
 
     return (
         <div className='wrapper text-white'>
-            <div className="flex-between mb-8">
+            {/* flex-between mb-8 */}
+            <div>
                 <h2 className="h2-bold">{board?.owner.name}'s Board</h2>
                 <GiftSuggestionForm boardId={boardId} />
             </div>
-            <div>
+            <div className='bg-gray-900 p-10'>
                 <h3 className="h3-bold mb-5">Gift Suggestions</h3>
                 <div className="grid md:grid-cols-2 gap-5">
                     {giftSuggestions.length > 0 && giftSuggestions.map(item => (

@@ -12,6 +12,4 @@ export const giftFormDefault = {
     name: "Headphones",
     link: 'https://shorturl.at/xAlSR',
     imageUrl: 'https://shorturl.at/jwIcL',
-    price: '600',
-
 }

@@ -1,4 +1,3 @@
-import { formatCurrency } from '@/lib/utils'
 import Image from 'next/image'
 import GiftButtons from './gift-buttons';
 import { auth } from '@/auth.config';
@@ -9,21 +8,19 @@ const GiftSuggestionCard = async (
 ) => {
     // console.log(item)
     const session = await auth();
-    if (!session?.user) return null;
     const userId = session?.user.id;
 
     return (
         <div className='flex gap-10'>
             <div>
-                <Image src={item.imageUrl} width={200} height={350} alt={item.name} loading='eager' />
+                <img src={item.image ? item.image : '/placeholder.png'} alt={item.name} className='w-40 h-40' />
             </div>
             <div className='flex flex-col justify-between'>
                 <div>
                     <h4 className="h3-bold mb-2">{item.name}</h4>
-                    <p>Price: {formatCurrency(item.price)}</p>
                     <p>Suggested By: {item.suggestedBy}</p>
                 </div>
-                <GiftButtons link={item.link} giftId={item.id} userId={userId} />
+                {/* <GiftButtons link={item.link} giftId={item.id} userId={userId} /> */}
             </div>
         </div>
     )
