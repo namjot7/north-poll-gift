@@ -5,49 +5,43 @@
 // import { submitGiftSuggestionForm } from '@/lib/actions/gift-suggestions.actions';
 // import { giftFormDefault } from '@/lib/constants';
 // import { useActionState } from 'react';
-// import {
-//     Dialog,
-//     DialogContent,
-//     DialogHeader,
-//     DialogTitle,
-//     DialogTrigger,
-// } from "@/components/ui/dialog";
+
 
 // const GiftSuggestionForm = ({ boardId }: { boardId: string }) => {
 //     const [data, action] = useActionState(submitGiftSuggestionForm, {
 //         success: false, message: ""
 //     })
 //     return (
-//         <Dialog>
-//             <form>
-//                 <DialogTrigger asChild>
-//                     <Button variant="default">Suggest a gift</Button>
-//                 </DialogTrigger>
-//                 <DialogContent className="w-sm">
-//                     <DialogHeader>
-//                         <DialogTitle>Suggest a gift</DialogTitle>
-//                     </DialogHeader>
-//                     <form action={action}>
-//                         <div className='space-y-4'>
-//                             <div className='space-y-3'>
-//                                 <Label htmlFor='name'>Gift Name</Label>
-//                                 <Input name='name' id='name' type='text' required defaultValue={giftFormDefault.name} autoComplete='true' />
-//                             </div>
-//                             <div className='space-y-3'>
-//                                 <Label htmlFor='link'>Link (optional)</Label>
-//                                 <Input name='link' id='link' type='text' defaultValue={giftFormDefault.link} />
-//                             </div>
-//                             <div className='space-y-3'>
-//                                 <Label htmlFor='imageUrl'>Upload a image  (optional)</Label>
-//                                 <Input name='imageUrl' id='imageUrl' type='text' defaultValue={giftFormDefault.imageUrl} />
-//                             </div>
-//                             <Input name='boardId' id='boardId' type='text' defaultValue={boardId} hidden />
-//                             <Button type='submit' className='w-full'>Add suggestion</Button>
-//                         </div>
-//                     </form>
-//                 </DialogContent>
+// <Dialog>
+//     <form>
+//         <DialogTrigger asChild>
+//             <Button variant="default">Suggest a gift</Button>
+//         </DialogTrigger>
+//         <DialogContent className="w-sm">
+//             <DialogHeader>
+//                 <DialogTitle>Suggest a gift</DialogTitle>
+//             </DialogHeader>
+//             <form action={action}>
+//                 <div className='space-y-4'>
+//                     <div className='space-y-3'>
+//                         <Label htmlFor='name'>Gift Name</Label>
+//                         <Input name='name' id='name' type='text' required  />
+//                     </div>
+//                     <div className='space-y-3'>
+//                         <Label htmlFor='link'>Link (optional)</Label>
+//                         <Input name='link' id='link' type='text'  />
+//                     </div>
+//                     <div className='space-y-3'>
+//                         <Label htmlFor='imageUrl'>Upload a image  (optional)</Label>
+//                         <Input name='imageUrl' id='imageUrl' type='text'  />
+//                     </div>
+//                     <Input name='boardId' id='boardId' type='text'  />
+//                     <Button type='submit' className='w-full'>Add suggestion</Button>
+//                 </div>
 //             </form>
-//         </Dialog>
+//         </DialogContent>
+//     </form>
+// </Dialog>
 
 //     )
 // }
@@ -64,11 +58,17 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { getLinkDetails, submitGiftSuggestionForm } from "@/lib/actions/gift-suggestions.actions";
 import { useUploadThing } from "@/lib/uploadthing";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
-  const [link, setLink] = useState("https://spacingstore.ca/collections/t-shirts/products/feral-raccoon-unisex-t-shirt");
+  const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [name, setName] = useState("");
   const [image, setImage] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<File | null>(null);
@@ -116,61 +116,73 @@ export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
     else if (image) {
       formData.append("image", image);
     }
-    await submitGiftSuggestionForm(formData);
+    else{
+      throw new Error("No image selected")
+    }
+    await submitGiftSuggestionForm(formData,boardId);
 
-    // setName("");
-    // setLink("");
-    // setFile(null);
-    // setImage(undefined);
+    setName("");
+    setLink("");
+    setFile(null);
+    setImage(undefined);
   }
 
   return (
     <div className="space-y-4">
+      <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="default">Suggest a gift</Button>
+          </DialogTrigger>
+          <DialogContent className="w-sm">
+            <DialogHeader>
+              <DialogTitle>Suggest a gift</DialogTitle>
+            </DialogHeader>
+            
+            {/* Step 1 - paste link */}
+            <div className="space-y-2 mb-3">
+              <Label>Product link</Label>
+              <Input
+                value={link} type="text"
+                onChange={(e) => setLink(e.target.value)}
+                placeholder="Paste product link"
+              />
+              <Button onClick={fetchPreview} disabled={loading}>
+                {loading ? "Fetching…" : "Fetch details"}
+              </Button>
+            </div>
 
-      {/* Step 1 - paste link */}
-      <div className="space-y-2 my-10">
-        <Label>Product link</Label>
-        <Input
-          value={link} type="text"
-          onChange={(e) => setLink(e.target.value)}
-          placeholder="Paste product link"
-        />
-        <Button onClick={() => fetchPreview()} disabled={loading}>
-          {loading ? "Fetching…" : "Fetch details"}
-        </Button>
-      </div>
+            {/* Step 2 - final form*/}
+            <form action={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label>Gift name</Label>
+                <Input
+                  value={name} type="text" required
+                  onChange={e=> setName(e.target.value)}
+                />
+              </div>
 
-      {/* Step 2 - final form*/}
-      <form action={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label>Gift name</Label>
-          <Input
-            value={name} type="text" required
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+              {/* Image preview */}
+              <div className="space-y-2">
+                <Label>Image</Label>
 
-        {/* Image preview */}
-        <div className="space-y-2">
-          <Label>Image</Label>
+                {/* Get image from the link */}
+                {image && !file && (
+                  <img src={image} className="w-32 rounded-md" />
+                )}
 
-          {/* Get image from the link */}
-          {image && !file && (
-            <img src={image} className="w-32 rounded-md" />
-          )}
-
-          {/* Upload image and show it */}
-          {file && <img src={URL.createObjectURL(file)} className="w-32" />}
-          <Input
-            type="file" accept="image/*"
-            onChange={e => setFile(e.target.files?.[0] ?? null)}
-          />
-        </div>
-
-        <Button type="submit" className="w-full">
-          {isUploading ? "Uploading..." : "Add suggestion"}
-        </Button>
-      </form>
+                {/* Upload image and show it */}
+                {file && <img src={URL.createObjectURL(file)} className="w-32" />}
+                <Input
+                  type="file" accept="image/*"
+                  onChange={e => setFile(e.target.files?.[0] ?? null)}
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                {isUploading ? "Uploading..." : "Add suggestion"}
+              </Button>
+            </form>
+          </DialogContent>
+      </Dialog>
     </div>
   );
 }

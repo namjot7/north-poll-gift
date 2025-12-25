@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import GiftSuggestionForm from './gift-suggestion-form';
 import GiftSuggestionCard from './gift-suggestion-card';
 import { getGiftSuggestions } from '@/lib/actions/gift-suggestions.actions';
+import { Gift } from '@/types';
 
 export const metadata: Metadata = {
     title: 'Board'
@@ -19,16 +20,15 @@ const BoardPage = async (
 
     return (
         <div className='wrapper text-white'>
-            {/* flex-between mb-8 */}
-            <div>
+            <div className='flex-between mb-8 '>
                 <h2 className="h2-bold">{board?.owner.name}'s Board</h2>
                 <GiftSuggestionForm boardId={boardId} />
             </div>
-            <div className='bg-gray-900 p-10'>
+            <div>
                 <h3 className="h3-bold mb-5">Gift Suggestions</h3>
-                <div className="grid md:grid-cols-2 gap-5">
+                <div className="grid md:grid-cols-2 gap-10">
                     {giftSuggestions.length > 0 && giftSuggestions.map(item => (
-                        <GiftSuggestionCard key={item.id} item={item} />
+                        <GiftSuggestionCard key={item.id} item={item as Gift} />
                     ))}
                 </div>
             </div>

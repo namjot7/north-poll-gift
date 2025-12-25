@@ -32,18 +32,21 @@ const GiftButtons = ({
     }, [])
 
     return (
-        <div className='flex gap-2'>
-            {link && <Link href={link} target="_blank">Check Now</Link>}
-            <Button className="bg-green-600 hover:bg-green-700"
-                onClick={() => handleVoteBtn(1)}>
-                <ArrowBigUp />
-                <span>{votes.upvotes}</span>
-            </Button>
-            <Button className="bg-red-600 hover:bg-red-700"
-                onClick={() => handleVoteBtn(-1)}>
-                <ArrowBigDown size={40} />
-                <span>{votes.downvotes}</span>
-            </Button>
+        <div className=''>
+            {link && <Link href={link} target="_blank" className="mb-3 block">Check Now</Link>}
+
+            <div className="flex gap-2">
+                <Button className="bg-green-600 hover:bg-green-700"
+                    onClick={() => handleVoteBtn(1)}>
+                    <ArrowBigUp />
+                    <span>{votes.upvotes}</span>
+                </Button>
+                <Button className="bg-red-600 hover:bg-red-700"
+                    onClick={() => handleVoteBtn(-1)}>
+                    <ArrowBigDown />
+                    <span>{votes.downvotes}</span>
+                </Button>
+            </div>
         </div>
     )
 }

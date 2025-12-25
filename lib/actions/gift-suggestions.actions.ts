@@ -3,6 +3,7 @@ import { prisma } from "@/db/prisma";
 import { giftSuggestionFormSchema } from "../validators";
 import { auth } from "@/auth.config";
 import * as cheerio from "cheerio";
+import { revalidatePath } from "next/cache";
 
 export async function getLinkDetails(url: string) {
     if (!url || !url.startsWith("http")) {
@@ -40,12 +41,11 @@ export async function getLinkDetails(url: string) {
 }
 
 export async function submitGiftSuggestionForm(
-    formData: FormData
+    formData: FormData,
+    boardId: string
 ) {
     const session = await auth()
     const suggestedByUser = session?.user?.name;
-
-    console.log(formData)
 
     const giftSuggestion = giftSuggestionFormSchema.parse({
         name: formData.get('name'),
@@ -54,8 +54,11 @@ export async function submitGiftSuggestionForm(
         boardId: formData.get('boardId'),
         suggestedBy: suggestedByUser,
     });
-    console.log(giftSuggestion)
+    // console.log(formData)
+    // console.log(giftSuggestion)
     await prisma.giftSuggestion.create({ data: giftSuggestion })
+
+    revalidatePath(`/boards/${boardId}`); // to get real-time updates in data
 
     return {
         success: true, message: "Form submitted successfully."
@@ -63,7 +66,7 @@ export async function submitGiftSuggestionForm(
 }
 export async function getGiftSuggestions({ boardId }: { boardId: string }) {
     const gifts = await prisma.giftSuggestion.findMany({
-        where: { boardId: boardId[0] }
+        where: { boardId: boardId[0] },
     });
     return gifts;
 }
