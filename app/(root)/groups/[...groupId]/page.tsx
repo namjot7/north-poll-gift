@@ -19,9 +19,9 @@ const GroupPage = async (
   const filteredBoards = await group?.boards?.filter(board => {
     if (board.ownerId !== session?.user?.id) return board
   })
-  // console.log({ filteredBoards })
+  console.log({ filteredBoards })
   // console.log(group)
-  // console.log(boards)
+  console.log(boards)
 
   return (
     <div className="wrapper">
@@ -46,6 +46,7 @@ const GroupPage = async (
             </Link>
           </div>
         ))}
+        {filteredBoards?.length == 0 && <div className="text-white">Invite others to share, plan, and celebrate together.</div>}
       </div>
     </div>
   )

@@ -12,10 +12,6 @@ export const UserSchema = z.object({
     email: z.email(),
 })
 
-export const createGroupSchema = z.object({
-    name: z.string().min(2, "Group name must be at least 2 characters"),
-})
-
 export const giftSuggestionFormSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     image: z.string().optional(),

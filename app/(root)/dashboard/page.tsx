@@ -1,11 +1,11 @@
 import { auth } from "@/auth.config"
-import { Button } from "@/components/ui/button";
 import CreateGroupForm from "./create-group-form";
 import JoinGroupForm from "./join-group-form";
 import { getGroups } from "@/lib/actions/group.actions";
 import Link from "next/link";
 import { Metadata } from "next";
-import { FaArrowAltCircleRight, FaTrash } from "react-icons/fa";
+
+import ActionsButtons from "./EditDeleteActions";
 
 export const metadata: Metadata = {
     title: 'Dashboard'
@@ -15,6 +15,7 @@ const Dashboard = async () => {
     const session = await auth();
     const groups = await getGroups(session);
     // console.log(groups.length)
+
 
     return (
         <div className="wrapper relative text-white">
@@ -26,7 +27,7 @@ const Dashboard = async () => {
                 </div>
             </div>
 
-            {/* Case 1 - User has no groups yet */}
+            {/* Case 1 - No groups yet */}
             {groups.length === 0 && (
                 <div>
                     <p className="text-xl mb-2 capitalize">Welcome {session?.user?.name}!</p>
@@ -35,17 +36,16 @@ const Dashboard = async () => {
                 </div>
             )}
 
-            {/* Case 2 — User is in a group but assignments not yet generated */}
+            {/* Case 2 — Has groups*/}
             {groups.length > 0 && (
-                <>
+                <div>
                     <h3 className="h3-bold">Your Groups</h3>
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-                        {groups.map((group, idx) => (
-
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+                        {groups.map(group => (
                             <div key={group.id} className="card">
                                 <div className="flex-between mb-2">
                                     <h4 className="text-xl font-medium mb-1">{group.name}</h4>
-                                    <span><FaTrash /></span>
+                                    <ActionsButtons groupId={group.id} groupName={group.name} />
                                 </div>
                                 <p>Date: </p>
                                 <p className="capitalize">
@@ -56,11 +56,11 @@ const Dashboard = async () => {
                                 <span className="text-sm text-gray-400">
                                     Created by - {group.createdBy}
                                 </span>
-                                <Link href={`groups/${group.id}`} className="btn-default block w-18 mt-2">Details</Link>
+                                <Link href={`groups/${group.id}`} className="btn-default mt-2 block w-1/4">Details</Link>
                             </div>
                         ))}
                     </div>
-                </>
+                </div>
             )}
         </div>
     )

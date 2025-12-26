@@ -22,7 +22,7 @@ model Board {
   id              String           @id @default(dbgenerated("gen_random_uuid()"))
   groupId         String
   ownerId         String // person getting the gift
-  group           Group            @relation(fields: [groupId], references: [id])
+  group           Group            @relation(fields: [groupId], references: [id], onDelete: Cascade)
   owner           User             @relation(fields: [ownerId], references: [id])
   giftSuggestions GiftSuggestion[]
 }
@@ -39,7 +39,7 @@ model GroupMember {
   id      String @id @default(uuid())
   groupId String
   userId  String
-  group   Group  @relation(fields: [groupId], references: [id])
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   user    User   @relation(fields: [userId], references: [id])
 }
 
@@ -52,7 +52,7 @@ model GiftSuggestion {
   boardId     String
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  votes Vote[]
+  votes       Vote[]
 }
 
 model Vote {
@@ -62,7 +62,7 @@ model Vote {
   value  Int
 
   user           User           @relation(fields: [userId], references: [id])
-  giftSuggestion GiftSuggestion @relation(fields: [giftId], references: [id])
+  giftSuggestion GiftSuggestion @relation(fields: [giftId], references: [id], onDelete: Cascade)
 
   @@unique([userId, giftId]) // composite unique key : limits the vote to 1 per user
 }

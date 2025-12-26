@@ -1,7 +1,7 @@
 'use server'
 import { prisma } from "@/db/prisma";
-import { createGroupSchema } from "../validators";
 import { auth } from "@/auth.config";
+import { revalidatePath } from "next/cache";
 
 export async function getGroups(session: any) {
     const groups = await prisma.group.findMany({
@@ -45,10 +45,6 @@ export async function createGroup(
     try {
         const session = await auth();
         const groupName = formData.get('groupName');
-        // console.log(session)
-
-        // do not know how to use Zod Validation
-        // const group_parsed = createGroupSchema.safeParse(groupName);
 
         await prisma.group.create({
             data: {
@@ -66,6 +62,7 @@ export async function createGroup(
                 }
             }
         })
+        revalidatePath('/dashboard')
         return { success: true, message: "Group created successfully." }
     }
     catch (error: any) {
@@ -95,9 +92,31 @@ export async function joinGroup(
                 ownerId: groupMember.userId
             }
         })
+        revalidatePath('/dashboard')
         return { success: true, message: "Group joined successfully." }
     }
     catch (error) {
         return { success: false, message: "Failed to create group. Try again.", error };
     }
+}
+
+export async function renameGroup(
+    prevState: { success: boolean; message: string },
+    formData: FormData
+) {
+    const groupId = formData.get("groupId") as string;
+    const groupName = formData.get("groupName") as string;
+
+    await prisma.group.update({
+        where: { id: groupId },
+        data: { name: groupName }
+    })
+    revalidatePath('/dashboard')
+    return { success: true, message: "Group renamed" };
+}
+
+export async function deleteGroup(groupId: string) {
+    await prisma.group.delete({ where: { id: groupId } })
+    revalidatePath('/dashboard')
+    return { success: true, message: "Group deleted" };
 }

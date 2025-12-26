@@ -14,7 +14,7 @@ export default async function RootLayout({
     <AuthProvider>
       <div className='h-screen flex flex-col relative'>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main>{children}</main>
         <Footer />
         <Toaster />
       </div>

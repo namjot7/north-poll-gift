@@ -47,7 +47,7 @@ body {
     }
 
     .card {
-        @apply w-sm bg-black/20 backdrop-blur-lg p-5 text-white rounded mb-3;
+        @apply bg-black/20 backdrop-blur-lg p-5 text-white rounded mb-3;
     }
 
     .btn-primary {
