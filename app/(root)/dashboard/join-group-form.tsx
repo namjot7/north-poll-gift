@@ -20,13 +20,12 @@ const JoinGroupForm = () => {
         success: false, message: ''
     })
     useEffect(() => {
-        if (data.success) {
-            setOpen(false);
-            toast.success('Group created successfully.');
-        }
-        else{
-            toast.error("Group not found")
-        }
+        // To prevent toast on initial load
+        if (!data.message) return;
+
+        toast[data.success ? "success" : "error"](data.message); // toast["success"]  --> same as toast.success
+
+        if (data.success) setOpen(false);
     }, [data])
     return (
         <Dialog open={open} onOpenChange={setOpen}>

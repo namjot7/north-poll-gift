@@ -20,15 +20,15 @@ const BoardPage = async (
 
     return (
         <div className='wrapper text-white'>
-            <div className='flex-between mb-8 '>
+            <div className='flex-between mb-5'>
                 <h2 className="h2-bold">{board?.owner.name}'s Board</h2>
                 <GiftSuggestionForm boardId={boardId} />
             </div>
             <div>
                 <h3 className="h3-bold mb-5">Gift Suggestions</h3>
-                <div className="grid md:grid-cols-2 gap-10">
+                <div className="card-container">
                     {giftSuggestions.length > 0 && giftSuggestions.map(item => (
-                        <GiftSuggestionCard key={item.id} item={item as Gift} />
+                        <GiftSuggestionCard key={item.id} item={item as Gift} boardId={boardId}/>
                     ))}
                 </div>
             </div>

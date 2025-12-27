@@ -1,27 +1,35 @@
-import GiftButtons from './gift-buttons';
 import { auth } from '@/auth.config';
 import { Gift } from '@/types';
+import { FaExternalLinkAlt } from "react-icons/fa";
+import GiftActions from './gift-buttons';
 
-const GiftSuggestionCard = async (
-    { item }: { item: Gift }
+const GiftSuggestionCard = async ({ item, boardId }: {
+    item: Gift, boardId: string
+}
 ) => {
     // console.log(item)
     const session = await auth();
     const userId = session?.user.id;
 
     return (
-        <div className='flex gap-10'>
-            <div>
-                <img src={item.image} className='w-40' alt='product image' />
+        <div className='card'>
+            <div className='h-44 w-full flex-center'>
+                <img src={item.image} className='w-44 max-h-full object-cover' alt='product image' />
             </div>
-            <div className=''>
-                <div className='space-y-1 mb-3'>
-                    <h4 className="text-xl font-medium">{item.name}</h4>
-                    <p>Suggested By: {item.suggestedBy}</p>
+            <div>
+                <div className='my-2'>
+                    <div className="flex-between gap-2">
+                        <h4 className='font-medium'>{item.name}</h4>
+                        <div className="">
+                            {item.link && <a href={item.link} target="_blank"><FaExternalLinkAlt /></a>}
+                        </div>
+                    </div>
+                    <p className='text-sm text-muted-foreground'>Suggested By: {item.suggestedBy}</p>
                 </div>
-                <GiftButtons link={item.link} giftId={item.id} userId={userId as string} />
+                <GiftActions giftId={item.id} userId={userId as string} boardId={boardId} />
             </div>
         </div>
+
     )
 }
 export default GiftSuggestionCard

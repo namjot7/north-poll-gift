@@ -2,7 +2,7 @@ import { auth } from "@/auth.config";
 import { getGroupById } from "@/lib/actions/group.actions";
 import { Metadata } from "next";
 import Link from "next/link";
-import ShareBtn from "./share-btn";
+import ShareBtn from "./share-leave-btns";
 
 export const metadata: Metadata = {
   title: 'Group'
@@ -19,9 +19,9 @@ const GroupPage = async (
   const filteredBoards = await group?.boards?.filter(board => {
     if (board.ownerId !== session?.user?.id) return board
   })
-  console.log({ filteredBoards })
+  // console.log({ filteredBoards })
   // console.log(group)
-  console.log(boards)
+  // console.log(boards)
 
   return (
     <div className="wrapper">
@@ -36,7 +36,7 @@ const GroupPage = async (
         ))}
       </p>
 
-      <div className="grid md:grid-cols-2 gap-3 mt-5">
+      <div className="card-container mt-5">
         {filteredBoards?.map(board => (
           <div key={board.id} className="card">
             <h3 className="h3-bold">{board.owner.name}'s board</h3>

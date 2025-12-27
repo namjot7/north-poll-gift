@@ -59,7 +59,7 @@ model Vote {
   id     String @id @default(uuid())
   userId String
   giftId String
-  value  Int
+  value  Int    @default(0)
 
   user           User           @relation(fields: [userId], references: [id])
   giftSuggestion GiftSuggestion @relation(fields: [giftId], references: [id], onDelete: Cascade)

@@ -12,9 +12,9 @@ export default async function RootLayout({
 
   return (
     <AuthProvider>
-      <div className='h-screen flex flex-col relative'>
+      <div className='flex flex-col relative'>
         <Header />
-        <main>{children}</main>
+        <main className='min-h-screen'>{children}</main>
         <Footer />
         <Toaster />
       </div>

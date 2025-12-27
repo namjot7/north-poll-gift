@@ -38,16 +38,20 @@ body {
         @apply font-medium text-xl lg:text-2xl;
     }
 
+    .card-container {
+        @apply grid sm:grid-cols-2 lg:grid-cols-3 gap-5;
+    }
+
+    .card {
+        @apply bg-black/20 backdrop-blur-lg p-5 text-white rounded-md mb-3;
+    }
+
     .btn-default {
         @apply bg-black hover:bg-neutral-800 text-white px-3 py-1 cursor-pointer rounded-sm;
     }
 
     .btn-link {
         @apply my-5 cursor-pointer underline;
-    }
-
-    .card {
-        @apply bg-black/20 backdrop-blur-lg p-5 text-white rounded mb-3;
     }
 
     .btn-primary {

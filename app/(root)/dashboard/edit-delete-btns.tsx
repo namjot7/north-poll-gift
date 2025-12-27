@@ -26,7 +26,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const EditDeleteActions = ({ groupId, groupName }: {
+const EditDeleteBtns = ({ groupId, groupName }: {
     groupId: string, groupName: string
 }) => {
     const [open, setOpen] = useState(false);
@@ -95,4 +95,4 @@ const EditDeleteActions = ({ groupId, groupName }: {
     );
 };
 
-export default EditDeleteActions;
+export default EditDeleteBtns;

@@ -120,3 +120,9 @@ export async function deleteGroup(groupId: string) {
     revalidatePath('/dashboard')
     return { success: true, message: "Group deleted" };
 }
+
+export async function leaveGroup(groupId: string) {
+    const res = await prisma.group.delete({ where: { id: groupId[0] } })
+    return { success: true, message: "you have left the group successfully." };
+
+}

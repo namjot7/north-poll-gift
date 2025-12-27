@@ -4,8 +4,8 @@ import JoinGroupForm from "./join-group-form";
 import { getGroups } from "@/lib/actions/group.actions";
 import Link from "next/link";
 import { Metadata } from "next";
+import EditDeleteBtns from "./edit-delete-btns";
 
-import ActionsButtons from "./EditDeleteActions";
 
 export const metadata: Metadata = {
     title: 'Dashboard'
@@ -40,12 +40,12 @@ const Dashboard = async () => {
             {groups.length > 0 && (
                 <div>
                     <h3 className="h3-bold">Your Groups</h3>
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+                    <div className="card-container mt-5">
                         {groups.map(group => (
                             <div key={group.id} className="card">
                                 <div className="flex-between mb-2">
                                     <h4 className="text-xl font-medium mb-1">{group.name}</h4>
-                                    <ActionsButtons groupId={group.id} groupName={group.name} />
+                                    <EditDeleteBtns groupId={group.id} groupName={group.name} />
                                 </div>
                                 <p>Date: </p>
                                 <p className="capitalize">
@@ -56,7 +56,7 @@ const Dashboard = async () => {
                                 <span className="text-sm text-gray-400">
                                     Created by - {group.createdBy}
                                 </span>
-                                <Link href={`groups/${group.id}`} className="btn-default mt-2 block w-1/4">Details</Link>
+                                <Link href={`groups/${group.id}`} className="btn-default mt-2 block w-20">Details</Link>
                             </div>
                         ))}
                     </div>
