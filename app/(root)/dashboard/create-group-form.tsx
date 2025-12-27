@@ -12,6 +12,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { toast } from "sonner";
+import { Plus } from "lucide-react";
 
 const CreateGroupForm = () => {
     const [open, setOpen] = useState(false);
@@ -28,7 +29,7 @@ const CreateGroupForm = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Create</Button>
+                <Button variant="default"><Plus/>Create</Button>
             </DialogTrigger>
             <DialogContent className="w-sm">
                 <DialogHeader>

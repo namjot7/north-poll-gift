@@ -28,7 +28,7 @@ const BoardPage = async (
                 <h3 className="h3-bold mb-5">Gift Suggestions</h3>
                 <div className="card-container">
                     {giftSuggestions.length > 0 && giftSuggestions.map(item => (
-                        <GiftSuggestionCard key={item.id} item={item as Gift} boardId={boardId}/>
+                        <GiftSuggestionCard key={item.id} item={item as Gift} />
                     ))}
                 </div>
             </div>

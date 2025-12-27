@@ -39,7 +39,7 @@ export async function getGroupById(groupId: string) {
 }
 
 export async function createGroup(
-    prevState: any,
+    prevState: { success: boolean, message: string },
     formData: FormData
 ) {
     try {
@@ -74,7 +74,7 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-    prevState: any,
+    prevState: { success: boolean, message: string },
     formData: FormData
 ) {
     try {

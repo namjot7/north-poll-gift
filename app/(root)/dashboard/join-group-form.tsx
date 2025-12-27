@@ -12,6 +12,7 @@ import { useActionState, useEffect, useState } from "react";
 import { joinGroup } from "@/lib/actions/group.actions";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Users } from "lucide-react";
 
 const JoinGroupForm = () => {
     const [open, setOpen] = useState(false);
@@ -30,7 +31,7 @@ const JoinGroupForm = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Join</Button>
+                <Button variant="default"><Users/>Join</Button>
             </DialogTrigger>
             <DialogContent className="w-sm">
                 <DialogHeader>

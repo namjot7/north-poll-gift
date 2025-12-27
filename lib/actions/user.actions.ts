@@ -7,7 +7,7 @@ import { signIn, signOut } from "@/auth.config";
 
 
 export async function signInWithCredentials(
-  prevState: any,
+  prevState: { success: boolean, message: string },
   formData: FormData
 ) {
   try {
@@ -32,7 +32,7 @@ export async function signInWithCredentials(
   }
 }
 export async function signUpUser(
-  prevState: unknown,
+  prevState: { success: boolean, message: string },
   formData: FormData
 ) {
   try {

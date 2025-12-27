@@ -98,28 +98,26 @@ export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
 
   // Submit final form
   const handleSubmit = async () => {
+    if (!file && !image) {
+      alert("Please select an image");
+      return;
+    }
     const formData = new FormData();
 
     formData.append("name", name);
     formData.append("link", link);
     formData.append("boardId", boardId);
 
+    let imageUrl = image;
+
     if (file) {
       const res = await startUpload([file]);
+      if (!res) return;
+      formData.append("image", res[0].ufsUrl ?? "");
+    }
+    formData.append("image", imageUrl!); // tells TypeScript - imageUrl is never null or undefined
 
-      if (!res) {
-        formData.append('image', '');
-        return;
-      }
-      formData.append("image", res[0].ufsUrl);
-    }
-    else if (image) {
-      formData.append("image", image);
-    }
-    else{
-      throw new Error("No image selected")
-    }
-    await submitGiftSuggestionForm(formData,boardId);
+    await submitGiftSuggestionForm(formData, boardId);
 
     setName("");
     setLink("");
@@ -130,58 +128,58 @@ export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
   return (
     <div className="space-y-4">
       <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="default">Suggest a gift</Button>
-          </DialogTrigger>
-          <DialogContent className="w-sm">
-            <DialogHeader>
-              <DialogTitle>Suggest a gift</DialogTitle>
-            </DialogHeader>
-            
-            {/* Step 1 - paste link */}
-            <div className="space-y-2 mb-3">
-              <Label>Product link</Label>
+        <DialogTrigger asChild>
+          <Button variant="default">Suggest a gift</Button>
+        </DialogTrigger>
+        <DialogContent className="w-sm">
+          <DialogHeader>
+            <DialogTitle>Suggest a gift</DialogTitle>
+          </DialogHeader>
+
+          {/* Step 1 - paste link */}
+          <div className="space-y-2 mb-3">
+            <Label>Product link</Label>
+            <Input
+              value={link} type="text"
+              onChange={(e) => setLink(e.target.value)}
+              placeholder="Paste product link"
+            />
+            <Button onClick={fetchPreview} disabled={loading}>
+              {loading ? "Fetching…" : "Fetch details"}
+            </Button>
+          </div>
+
+          {/* Step 2 - final form*/}
+          <form action={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Gift name</Label>
               <Input
-                value={link} type="text"
-                onChange={(e) => setLink(e.target.value)}
-                placeholder="Paste product link"
+                value={name} type="text" required
+                onChange={e => setName(e.target.value)}
               />
-              <Button onClick={fetchPreview} disabled={loading}>
-                {loading ? "Fetching…" : "Fetch details"}
-              </Button>
             </div>
 
-            {/* Step 2 - final form*/}
-            <form action={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label>Gift name</Label>
-                <Input
-                  value={name} type="text" required
-                  onChange={e=> setName(e.target.value)}
-                />
-              </div>
+            {/* Image preview */}
+            <div className="space-y-2">
+              <Label>Image</Label>
 
-              {/* Image preview */}
-              <div className="space-y-2">
-                <Label>Image</Label>
+              {/* Get image from the link */}
+              {image && !file && (
+                <img src={image} className="w-32 rounded-md" />
+              )}
 
-                {/* Get image from the link */}
-                {image && !file && (
-                  <img src={image} className="w-32 rounded-md" />
-                )}
-
-                {/* Upload image and show it */}
-                {file && <img src={URL.createObjectURL(file)} className="w-32" />}
-                <Input
-                  type="file" accept="image/*"
-                  onChange={e => setFile(e.target.files?.[0] ?? null)}
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                {isUploading ? "Uploading..." : "Add suggestion"}
-              </Button>
-            </form>
-          </DialogContent>
+              {/* Upload image and show it */}
+              {file && <img src={URL.createObjectURL(file)} className="w-32" />}
+              <Input
+                type="file" accept="image/*"
+                onChange={e => setFile(e.target.files?.[0] ?? null)}
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              {isUploading ? "Uploading..." : "Add suggestion"}
+            </Button>
+          </form>
+        </DialogContent>
       </Dialog>
     </div>
   );

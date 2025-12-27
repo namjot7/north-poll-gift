@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Metadata } from "next";
 import EditDeleteBtns from "./edit-delete-btns";
 
-
 export const metadata: Metadata = {
     title: 'Dashboard'
 }

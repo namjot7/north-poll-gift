@@ -1,6 +1,4 @@
 'use client'
-import { FaTrash } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
@@ -25,21 +23,19 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Pencil, Trash2 } from "lucide-react";
 
 const EditDeleteBtns = ({ groupId, groupName }: {
     groupId: string, groupName: string
 }) => {
     const [open, setOpen] = useState(false);
-    const [data, formAction] = useActionState(renameGroup, {
+    const [data, action] = useActionState(renameGroup, {
         success: false, message: ''
     })
 
     const handleDelete = async () => {
         const res = await deleteGroup(groupId);
-
-        if (res.success) {
-            toast.success(groupName + " Deleted")
-        }
+        if (res.success) toast.success(groupName + " Deleted")
     };
 
     // close the shadCn dialog when action succeeds
@@ -54,17 +50,16 @@ const EditDeleteBtns = ({ groupId, groupName }: {
             {/* Rename btn */}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild className="cursor-pointer hover:bg-gray-100/10 rounded-md p-2">
-                    <button><MdEdit /></button>
+                    <button><Pencil className='w-5' /></button>
                 </DialogTrigger>
                 <DialogContent className="w-sm">
                     <DialogHeader>
                         <DialogTitle>Rename group</DialogTitle>
                     </DialogHeader>
-                    <form action={formAction}>
+                    <form action={action}>
                         <div className="grid gap-2 mb-5">
                             <Label htmlFor="groupName">Group Name</Label>
                             <Input id="groupName" name="groupName" type="text" required defaultValue={groupName} />
-
                             <Input value={groupId} id="groupId" name="groupId" type="text" hidden readOnly />
                         </div>
                         <Button type="submit" className="w-full">Rename</Button>
@@ -75,7 +70,7 @@ const EditDeleteBtns = ({ groupId, groupName }: {
             {/* Delete btn */}
             <AlertDialog>
                 <AlertDialogTrigger className="cursor-pointer hover:bg-gray-100/10 p-2 rounded-md">
-                    <FaTrash />
+                    <Trash2 className="w-5" />
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

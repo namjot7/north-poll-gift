@@ -56,17 +56,26 @@ export async function submitGiftSuggestionForm(
     });
     // console.log(formData)
     // console.log(giftSuggestion)
+    
     await prisma.giftSuggestion.create({ data: giftSuggestion })
-
     revalidatePath(`/boards/${boardId}`); // to get real-time updates in data
 
     return { success: true, message: "Form submitted successfully." }
 }
+
 export async function getGiftSuggestions({ boardId }: { boardId: string }) {
     const gifts = await prisma.giftSuggestion.findMany({
         where: { boardId: boardId[0] },
     });
     return gifts;
+}
+
+export async function updateGiftSuggestion(
+    prevState: { success: boolean, message: string },
+    formData: FormData
+) {
+console.log(formData)
+    return { success: true, message: "Gift updated successfully" };
 }
 
 export async function deleteGift(
@@ -75,6 +84,6 @@ export async function deleteGift(
 ) {
     // console.log(giftId, boardId[0])
     await prisma.giftSuggestion.delete({ where: { id: giftId } });
-    revalidatePath(`/board/${boardId[0]}`)
-    return { success: true, message: "Gift deleted successfully." }
+    revalidatePath(`/board/${boardId[0]}`);
+    return { success: true, message: "Gift deleted successfully" };
 }
