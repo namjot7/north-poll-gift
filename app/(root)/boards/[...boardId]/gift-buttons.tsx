@@ -26,19 +26,24 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useUploadThing } from "@/lib/uploadthing";
 
 const GiftButtons = ({ gift, userId }: {
     gift: Gift,
     userId: string,
 }) => {
-    const [data, action] = useActionState(updateGiftSuggestion, {
-        success: false, message: ""
-    })
     const [votes, setVotes] = useState({
         giftId: gift.id, downvotes: 0, upvotes: 0, score: 0
     });
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [name, setName] = useState(gift.name ?? "");
+    const [link, setLink] = useState(gift.link ?? "");
+    const [image, setImage] = useState<string | undefined>(gift.image ?? undefined);
     const [file, setFile] = useState<File | null>(null);
+
+    // Upload image to UploadThing
+    const { startUpload, isUploading } = useUploadThing("imageUploader");
 
     const handleVoteBtn = async (value: number) => {
         await handleVote(gift.id, value, userId);
@@ -54,8 +59,26 @@ const GiftButtons = ({ gift, userId }: {
     };
 
     const handleUpdateGift = async () => {
-        // const formData=new FormData();
-        // const res = await updateGiftSuggestion();
+        const formData = new FormData();
+
+        formData.append('name', name);
+        formData.append('link', link);
+        formData.append('prevImageKey', gift.imageKey ?? "");
+
+        let imageUrl = image;
+
+        if (file) {
+            const res = await startUpload([file]);
+            if (!res) return;
+            imageUrl = res[0].ufsUrl;
+            formData.append('imageKey', res[0].key);
+        }
+        formData.append('image', imageUrl!);
+
+        // for (const element of formData) {
+        //     console.log(element)
+        // }
+        const res = await updateGiftSuggestion(gift.id, formData);
         // console.log(res)
         // formData.append
     }
@@ -95,28 +118,32 @@ const GiftButtons = ({ gift, userId }: {
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Edit Gift Suggestion</DialogTitle>
-                            <DialogDescription />
                         </DialogHeader>
-                        <form action={action}>
+                        <DialogDescription></DialogDescription>
+                        <form action={handleUpdateGift}>
                             <div className="grid gap-2 mb-5">
                                 <div>
                                     <Label htmlFor="giftName">Name</Label>
-                                    <Input id="giftName" name="giftName" type="text" required defaultValue={gift.name} />
+                                    <Input id="giftName" name="giftName" type="text"
+                                        onChange={e => setName(e.target.value)} value={name}
+                                    />
                                 </div>
                                 <div>
-                                    <Label htmlFor="link">Link</Label>
-                                    <Input id="link" name="link" type="text" required defaultValue={gift.link} />
+                                    <Label htmlFor="link">Link (optional)</Label>
+                                    <Input id="link" name="link" type="text"
+                                        onChange={e => setLink(e.target.value)} value={link}
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="link">Upload image</Label>
 
                                     {/* Remove the current image when user uploads a new image */}
-                                    {!file && <img src={gift.image} className="w-44" alt="product image" />}
+                                    {!file && <img src={image} className="w-44" alt="product image" />}
 
                                     {/* New uploaded image */}
                                     {file && <img src={URL.createObjectURL(file)} className="w-44" alt="product image" />}
 
-                                    <Input type="file" accept="image/*" required
+                                    <Input type="file" accept="image/*"
                                         onChange={e => setFile(e.target.files?.[0] ?? null)} />
                                 </div>
 

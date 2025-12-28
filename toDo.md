@@ -22,3 +22,7 @@
 - user already exists and tries to join same group
 - error handling for when group id does not exist
 - 
+
+### big updates for future
+- wishlist to make easier to suggest gifts
+- store the fetched image URL in uploadThing to make site more reliable
