@@ -14,7 +14,7 @@ const GroupPage = async (
   const session = await auth()
   const { groupId } = await params;
   const group = await getGroupById(groupId[0]);
-  const boards = await group?.boards;
+  // const boards = await group?.boards;
 
   const filteredBoards = await group?.boards?.filter(board => {
     if (board.ownerId !== session?.user?.id) return board
@@ -30,8 +30,8 @@ const GroupPage = async (
         <ShareBtn groupId={groupId} />
       </div>
 
-      <p className="mt-5 text-white">
-        {group?.groupMembers.map(e => (
+      <p className="mt-5 text-white text-sm">
+        Members: {group?.groupMembers.map(e => (
           <span className="capitalize" key={e.id}>{e.user.name}, </span>
         ))}
       </p>
@@ -39,7 +39,7 @@ const GroupPage = async (
       <div className="card-container mt-5">
         {filteredBoards?.map(board => (
           <div key={board.id} className="card">
-            <h3 className="h3-bold">{board.owner.name}'s board</h3>
+            <h3 className="h3-bold">{board.owner.name}&apos;s board</h3>
             <p className="my-3">Assigned to: </p>
             <Link href={`/boards/${board.id}`} className="btn-default">
               See the suggestions

@@ -12,7 +12,7 @@ export const ourFileRouter = {
         .middleware(async () => {
             return {}; // auth (optional)
         })
-        .onUploadComplete(async ({ metadata, file }) => {
+        .onUploadComplete(async ({ file }) => {
             console.log("file url", file.ufsUrl);
             return {
                 url: file.ufsUrl

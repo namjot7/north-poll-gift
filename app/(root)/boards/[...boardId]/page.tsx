@@ -21,7 +21,7 @@ const BoardPage = async (
     return (
         <div className='wrapper text-white'>
             <div className='flex-between mb-5'>
-                <h2 className="h2-bold">{board?.owner.name}'s Board</h2>
+                <h2 className="h2-bold">{board?.owner.name}&apos;s Board</h2>
                 <GiftSuggestionForm boardId={boardId} />
             </div>
             <div>

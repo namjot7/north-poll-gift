@@ -27,11 +27,12 @@ const JoinGroupForm = () => {
         toast[data.success ? "success" : "error"](data.message); // toast["success"]  --> same as toast.success
 
         if (data.success) setOpen(false);
-    }, [data])
+    }, [data.success, data.message])
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default"><Users/>Join</Button>
+                <Button variant="default"><Users />Join</Button>
             </DialogTrigger>
             <DialogContent className="w-sm">
                 <DialogHeader>

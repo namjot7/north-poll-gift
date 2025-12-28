@@ -1,8 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { IoIosShareAlt } from "react-icons/io";
 import { toast } from "sonner";
-import { MdExitToApp } from "react-icons/md";
 import { leaveGroup } from '@/lib/actions/group.actions';
 import { useRouter } from 'next/navigation';
 import {
@@ -10,12 +8,12 @@ import {
     AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
-    AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { LogOut, Share2 } from 'lucide-react';
 
 const ShareLeaveBtns = ({ groupId }: { groupId: string }) => {
     const router = useRouter();
@@ -26,13 +24,13 @@ const ShareLeaveBtns = ({ groupId }: { groupId: string }) => {
                 await navigator.clipboard.writeText(groupId);
                 toast.success("GroupId copied");
             }}>
-                <IoIosShareAlt />Share
+                <Share2 />Share
             </Button>
 
             {/* Leave group btn */}
             <AlertDialog>
                 <AlertDialogTrigger className="btn-default flex-center gap-1  text-sm font-medium">
-                    <MdExitToApp />Leave Group
+                    <LogOut className='w-5' />Leave Group
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

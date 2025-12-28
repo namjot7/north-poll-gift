@@ -31,7 +31,7 @@ const EditDeleteBtns = ({ groupId, groupName }: {
     const [open, setOpen] = useState(false);
     const [data, action] = useActionState(renameGroup, {
         success: false, message: ''
-    })
+    });
 
     const handleDelete = async () => {
         const res = await deleteGroup(groupId);

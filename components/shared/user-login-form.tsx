@@ -1,13 +1,13 @@
 'use client'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'
-import { signInDefaultValues } from '@/lib/constants';
+import { ServerActionType } from '@/types';
 import { Label } from '@radix-ui/react-label'
 import Link from 'next/link';
 import { useActionState } from 'react';
 
 const UserLoginForm = ({ serverAction, type }: {
-    serverAction: any,
+    serverAction: ServerActionType,
     type: string
 }) => {
     const [data, action] = useActionState(serverAction, {
@@ -19,22 +19,15 @@ const UserLoginForm = ({ serverAction, type }: {
             <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
                     <Label className='text-gray-400' htmlFor="name">Name</Label>
-                    <Input className="border-0" id='name' type="name" name='name' required
-                        defaultValue={signInDefaultValues.name}
-                    />
+                    <Input className="border-0" id='name' type="name" name='name' required />
                 </div>
                 <div className="grid gap-2">
                     <Label className='text-gray-400' htmlFor="email">Email</Label>
-                    <Input className="border-0" id='email' type="email" name='email' required autoComplete='email'
-                        defaultValue={signInDefaultValues.email}
-                    />
+                    <Input className="border-0" id='email' type="email" name='email' required autoComplete='email' />
                 </div>
                 <div className="grid gap-2">
                     <Label className='text-gray-400' htmlFor="password">Password</Label>
-                    <Input className="border-0" id='password'
-                        type="password" required name='password'
-                        defaultValue={signInDefaultValues.password}
-                    />
+                    <Input className="border-0" id='password' type="password" required name='password' />
                 </div>
                 {type == "login"
                     ? <div className="text-sm text-gray-400">

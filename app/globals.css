@@ -47,7 +47,7 @@ body {
     }
 
     .btn-default {
-        @apply bg-black hover:bg-neutral-800 text-white px-3 py-1 cursor-pointer rounded-sm;
+        @apply bg-[#171717] hover:bg-[#2f2f2f] text-white px-3 py-1 cursor-pointer rounded-sm;
     }
 
     .btn-link {

@@ -47,6 +47,7 @@ model GiftSuggestion {
   id          String   @id @default(dbgenerated("gen_random_uuid()"))
   name        String
   image       String?
+  imageKey    String? // change this to Required later
   link        String?
   suggestedBy String
   boardId     String
@@ -59,7 +60,7 @@ model Vote {
   id     String @id @default(uuid())
   userId String
   giftId String
-  value  Int    @default(0)
+  value  Int
 
   user           User           @relation(fields: [userId], references: [id])
   giftSuggestion GiftSuggestion @relation(fields: [giftId], references: [id], onDelete: Cascade)

@@ -28,7 +28,7 @@ export async function signInWithCredentials(
     if (isRedirectError(error)) {
       throw error;
     }
-    return { success: false, message: "Email or password in incorrect." }
+    return { success: false, message: "Signin failed" }
   }
 }
 export async function signUpUser(

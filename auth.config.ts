@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/db/prisma";
 
-
 export const config = {
     pages: {
         signIn: '/sign-in',
@@ -46,7 +45,7 @@ export const config = {
         })
     ],
     callbacks: {
-        async session({ session, user, token }) {
+        async session({ session, token }) {
             session.user.id = token.sub as string;
             return session
         },

@@ -1,55 +1,3 @@
-// 'use client';
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
-// import { Label } from '@/components/ui/label';
-// import { submitGiftSuggestionForm } from '@/lib/actions/gift-suggestions.actions';
-// import { giftFormDefault } from '@/lib/constants';
-// import { useActionState } from 'react';
-
-
-// const GiftSuggestionForm = ({ boardId }: { boardId: string }) => {
-//     const [data, action] = useActionState(submitGiftSuggestionForm, {
-//         success: false, message: ""
-//     })
-//     return (
-// <Dialog>
-//     <form>
-//         <DialogTrigger asChild>
-//             <Button variant="default">Suggest a gift</Button>
-//         </DialogTrigger>
-//         <DialogContent className="w-sm">
-//             <DialogHeader>
-//                 <DialogTitle>Suggest a gift</DialogTitle>
-//             </DialogHeader>
-//             <form action={action}>
-//                 <div className='space-y-4'>
-//                     <div className='space-y-3'>
-//                         <Label htmlFor='name'>Gift Name</Label>
-//                         <Input name='name' id='name' type='text' required  />
-//                     </div>
-//                     <div className='space-y-3'>
-//                         <Label htmlFor='link'>Link (optional)</Label>
-//                         <Input name='link' id='link' type='text'  />
-//                     </div>
-//                     <div className='space-y-3'>
-//                         <Label htmlFor='imageUrl'>Upload a image  (optional)</Label>
-//                         <Input name='imageUrl' id='imageUrl' type='text'  />
-//                     </div>
-//                     <Input name='boardId' id='boardId' type='text'  />
-//                     <Button type='submit' className='w-full'>Add suggestion</Button>
-//                 </div>
-//             </form>
-//         </DialogContent>
-//     </form>
-// </Dialog>
-
-//     )
-// }
-
-// export default GiftSuggestionForm;
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -65,13 +13,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { toast } from "sonner";
 
 export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
-  const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
+  const [link, setLink] = useState("");
   const [image, setImage] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<File | null>(null);
+
+  // Upload image to UploadThing
+  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+    onClientUploadComplete: (res) => {
+      // console.log(res)
+    },
+    onUploadError: (error) => {
+      alert(error.message);
+    },
+  });
 
   // Get product details from the link
   const fetchPreview = async () => {
@@ -85,17 +46,6 @@ export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
 
     setLoading(false);
   }
-
-  // Upload image to UploadThing
-  const { startUpload, isUploading } = useUploadThing("imageUploader", {
-    onClientUploadComplete: (res) => {
-      // console.log(res)
-    },
-    onUploadError: (error) => {
-      alert(error.message);
-    },
-  });
-
   // Submit final form
   const handleSubmit = async () => {
     if (!file && !image) {
@@ -113,21 +63,27 @@ export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
     if (file) {
       const res = await startUpload([file]);
       if (!res) return;
-      formData.append("image", res[0].ufsUrl ?? "");
+      // console.log(res)
+      imageUrl = res[0].ufsUrl;
+      formData.append('imageKey', res[0].key);
     }
     formData.append("image", imageUrl!); // tells TypeScript - imageUrl is never null or undefined
 
-    await submitGiftSuggestionForm(formData, boardId);
+    const res = await submitGiftSuggestionForm(formData, boardId);
 
-    setName("");
-    setLink("");
-    setFile(null);
-    setImage(undefined);
+    if (res.success) {
+      toast.success('Suggestion added')
+      setOpen(false);
+      setName("");
+      setLink("");
+      setFile(null);
+      setImage(undefined);
+    }
   }
 
   return (
     <div className="space-y-4">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="default">Suggest a gift</Button>
         </DialogTrigger>
@@ -135,7 +91,7 @@ export default function GiftSuggestionDialog({ boardId }: { boardId: string }) {
           <DialogHeader>
             <DialogTitle>Suggest a gift</DialogTitle>
           </DialogHeader>
-
+          <DialogDescription />
           {/* Step 1 - paste link */}
           <div className="space-y-2 mb-3">
             <Label>Product link</Label>

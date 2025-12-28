@@ -14,7 +14,7 @@ const GiftSuggestionCard = async ({ item }: {
     return (
         <div className='card'>
             <div className='h-44 w-full flex-center'>
-                <img src={item.image} className='w-44 max-h-full object-cover' alt='product image' />
+                <img src={item.image || '/placeholder.png'} className='w-44 max-h-full object-cover' alt='product image' />
             </div>
             <div>
                 <div className='my-2'>

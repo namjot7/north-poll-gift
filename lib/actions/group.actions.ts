@@ -2,8 +2,15 @@
 import { prisma } from "@/db/prisma";
 import { auth } from "@/auth.config";
 import { revalidatePath } from "next/cache";
+import { UTApi } from "uploadthing/server";
+import { Group } from "@/types";
 
-export async function getGroups(session: any) {
+// To delete files from the UploadThing Database
+const utapi = new UTApi();
+
+export async function getGroups(
+    session: { user?: { id?: string } } | null
+): Promise<Group[]> {
     const groups = await prisma.group.findMany({
         where: {
             groupMembers: {
@@ -41,7 +48,7 @@ export async function getGroupById(groupId: string) {
 export async function createGroup(
     prevState: { success: boolean, message: string },
     formData: FormData
-) {
+): Promise<{ success: boolean, message: string }> {
     try {
         const session = await auth();
         const groupName = formData.get('groupName');
@@ -65,11 +72,11 @@ export async function createGroup(
         revalidatePath('/dashboard')
         return { success: true, message: "Group created successfully." }
     }
-    catch (error: any) {
-        if (error.errors) {
-            return { success: false, message: error.errors[0].message };
+    catch (err: unknown) {
+        if (err instanceof Error) {
+            return { success: false, message: err.message };
         }
-        return { success: false, message: "Failed to create group. Try again.", error };
+        return { success: false, message: "Unknown error" };
     }
 }
 
@@ -96,7 +103,7 @@ export async function joinGroup(
         return { success: true, message: "Group joined successfully." }
     }
     catch (error) {
-        return { success: false, message: "Failed to create group. Try again.", error };
+        return { success: false, message: "group does not exist" };
     }
 }
 
@@ -116,13 +123,36 @@ export async function renameGroup(
 }
 
 export async function deleteGroup(groupId: string) {
+    // get all the image keys
+    const keysData = await prisma.giftSuggestion.findMany({
+        where: {
+            board: {
+                groupId: groupId,
+            }
+        },
+        select: {
+            imageKey: true
+        }
+    })
+    console.log(keysData)
+
+    // create an array out of the keys and filter the empty string values "" 
+    const keys = keysData.map(item => item.imageKey).filter((key): key is string => key !== "")
+    console.log(keys);
+
+    if (keys.length > 0) {
+        await utapi.deleteFiles(keys);
+    }
+
+
     await prisma.group.delete({ where: { id: groupId } })
+
     revalidatePath('/dashboard')
     return { success: true, message: "Group deleted" };
 }
 
 export async function leaveGroup(groupId: string) {
-    const res = await prisma.group.delete({ where: { id: groupId[0] } })
+    await prisma.group.delete({ where: { id: groupId[0] } })
     return { success: true, message: "you have left the group successfully." };
 
 }

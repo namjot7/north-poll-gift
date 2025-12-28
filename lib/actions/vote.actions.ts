@@ -1,15 +1,8 @@
 'use server';
 import { prisma } from "@/db/prisma"
 
-
 // GET votes
 export async function getVotes(giftId: string) {
-    // const upVotes = await prisma.vote.count({
-    //     where: { giftId, value: 1 }
-    // })
-    // const downVotes = await prisma.vote.count({
-    //     where: { giftId, value: 1 }
-    // })
     const [upvotes, downvotes] = await Promise.all([
         prisma.vote.count({ where: { giftId, value: 1 } }),
         prisma.vote.count({ where: { giftId, value: -1 } })

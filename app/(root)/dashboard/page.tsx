@@ -5,6 +5,7 @@ import { getGroups } from "@/lib/actions/group.actions";
 import Link from "next/link";
 import { Metadata } from "next";
 import EditDeleteBtns from "./edit-delete-btns";
+import { Group } from "@/types";
 
 export const metadata: Metadata = {
     title: 'Dashboard'
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 
 const Dashboard = async () => {
     const session = await auth();
-    const groups = await getGroups(session);
+    const groups: Group[] = await getGroups(session);
     // console.log(groups.length)
 
 
@@ -30,7 +31,7 @@ const Dashboard = async () => {
             {groups.length === 0 && (
                 <div>
                     <p className="text-xl mb-2 capitalize">Welcome {session?.user?.name}!</p>
-                    <p>It looks like you're not in a gift exchange yet. Let&apos;s change that!</p>
+                    <p>It looks like you&apos;re not in a gift exchange yet. Let&apos;s change that!</p>
                     <p>Start a new group or join one with friends and family — and let the fun begin!</p>
                 </div>
             )}
