@@ -4,6 +4,10 @@ import { giftSuggestionFormSchema, updateGiftSuggestionFormSchema } from "../val
 import { auth } from "@/auth.config";
 import * as cheerio from "cheerio";
 import { revalidatePath } from "next/cache";
+import { UTApi } from "uploadthing/server";
+
+// To delete files from the UploadThing Database
+const utapi = new UTApi();
 
 export async function getLinkDetails(url: string) {
     if (!url || !url.startsWith("http")) {
@@ -74,10 +78,29 @@ export async function submitGiftSuggestionForm(
 }
 
 export async function updateGiftSuggestion(
-    prevState: { success: boolean, message: string },
+    giftId: string,
+    boardId: string,
     formData: FormData
 ) {
-console.log(formData)
+    const giftData = updateGiftSuggestionFormSchema.parse({
+        name: formData.get('name'),
+        link: formData.get('link'),
+        image: formData.get('image'),
+        imageKey: formData.get('imageKey') ?? "",
+    });
+    // console.log(formData)
+    // console.log(giftData)
+
+    const prevKey = formData.get('prevImageKey');
+    if (prevKey && typeof prevKey === "string") {
+        await utapi.deleteFiles(prevKey);
+    }
+    await prisma.giftSuggestion.update({
+        where: { id: giftId },
+        data: giftData
+    })
+    // console.log(res);
+    revalidatePath(`/board/${boardId}`);
     return { success: true, message: "Gift updated successfully" };
 }
 
